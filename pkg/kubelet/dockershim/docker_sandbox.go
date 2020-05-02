@@ -250,8 +250,7 @@ func (ds *dockerService) StopPodSandbox(ctx context.Context, r *runtimeapi.StopP
 	// since it is stopped. With empty network namespcae, CNI bridge plugin will conduct best
 	// effort clean up and will not return error.
 	errList := []error{}
-	ready, ok := ds.getNetworkReady(podSandboxID)
-	if !hostNetwork && (ready || !ok) {
+	if !hostNetwork {
 		// Only tear down the pod network if we haven't done so already
 		cID := kubecontainer.BuildContainerID(runtimeName, podSandboxID)
 		err := ds.network.TearDownPod(namespace, name, cID)
